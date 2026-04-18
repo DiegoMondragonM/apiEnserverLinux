@@ -1,0 +1,8 @@
+Cuando actualices
+Windows
+git add .
+git commit -m "cambios"
+git push
+Linux
+git pull
+pm2 restart mi-api
