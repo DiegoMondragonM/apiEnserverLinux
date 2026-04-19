@@ -1,11 +1,14 @@
-const express = require('express');
-const app = express();
 
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('API funcionando broo, estamos de una madre muy bueno bro jajaj');
-});
+app.use('/productos', require('./routes/productos.router.js'));
+
+
 
 const PORT = 3000;
 app.listen(PORT, () => {
