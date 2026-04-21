@@ -23,6 +23,6 @@ const errorHandler=(err,req,res,next)=>
             ok:'false',
             mensaje:err.message||'Error interno del servidor'
         }
-    );
-    module.exports = errorHandler;    
+    ); 
 }
+module.exports = errorHandler;   
