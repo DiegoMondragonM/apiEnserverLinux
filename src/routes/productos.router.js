@@ -9,8 +9,8 @@ const{
 
 router.get('/',listarProductos);
 router.get('/:id',obtenerProducto);
-router.get('/',crearProducto);
-router.get('/:id',editarProducto);
-router.get('/:id',eliminarProducto);
+router.post('/',crearProducto);
+router.put('/:id',editarProducto);
+router.delete('/:id',eliminarProducto);
 
 module.exports=router;
