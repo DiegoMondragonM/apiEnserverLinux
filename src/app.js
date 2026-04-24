@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const productosRouter=require('./routes/productos.router');
 const errorHandler=require('./middlewares/errorHandler');
-
+const categoriasRouter=require('./routes/categorias.router');
 const app=express();
 const PORT=process.env.PORT||3000;
 
@@ -18,7 +18,7 @@ app.get('/health', (req,res)=>
   res.json({ok:'true',mensaje:'API corriendo correctamente'});
 });
 app.use('/productos', productosRouter);
-
+app.use('/categorias',categoriasRouter);
 app.use((req,res)=>
 {
   res.status(404).json({ok:false, mensaje:'ruta no encontrada'});
