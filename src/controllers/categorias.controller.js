@@ -2,36 +2,15 @@ const pool = require('../db/pool');
 
 const categorias = async (req, res, next) => {
   try {
-    const { categoria_id, nombre } = req.query;
-
-    let query = `
+    const query = `
       SELECT 
-        id AS categoria_id,
-        nombre
+        c.id AS categoria_id,
+        c.nombre
       FROM categorias c
-      ORDER BY id ASC
+      ORDER BY c.id ASC
     `;
 
-    // const params = [];
-    // const conditions = [];
-
-    // if (categoria_id) {
-    //   params.push(categoria_id);
-    //   conditions.push(`c.id = $${params.length}`);
-    // }
-
-    // if (nombre) {
-    //   params.push(nombre);
-    //   conditions.push(`c.nombre = $${params.length}`);
-    // }
-
-    // if (conditions.length > 0) {
-    //   query += ` WHERE ` + conditions.join(' AND ');
-    // }
-
-    //query += ` ORDER BY c.id ASC`;
-
-    const result = await pool.query(query, params);
+    const result = await pool.query(query);
 
     res.json({
       ok: true,
