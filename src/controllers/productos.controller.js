@@ -1,5 +1,9 @@
 const pool = require('../db/pool');
 
+const transformarProducto = (producto) => ({
+  ...producto,
+  precio: parseFloat(producto.precio)
+});
 // GET /productos
 const listarProductos = async (req, res, next) => {
   try {
@@ -26,7 +30,8 @@ const listarProductos = async (req, res, next) => {
     query += ' ORDER BY p.created_at DESC';
 
     const { rows } = await pool.query(query, params);
-    res.json({ ok: true, total: rows.length, datos: rows });
+    const datos=rows.map(transformarProducto);
+    res.json({ ok: true, total: rows.length, datos});
   } catch (err) {
     next(err);
   }
@@ -47,8 +52,9 @@ const obtenerProducto = async (req, res, next) => {
     if (rows.length === 0) {
       return res.status(404).json({ ok: false, mensaje: 'Producto no encontrado' });
     }
+    const datos=transformarProducto(rows[0])
 
-    res.json({ ok: true, datos: rows[0] });
+    res.json({ ok: true, datos});
   } catch (err) {
     next(err);
   }
@@ -70,7 +76,8 @@ const crearProducto = async (req, res, next) => {
       [nombre, descripcion, precio, stock ?? 0, categoria_id ?? null, imagen_url ?? null]
     );
 
-    res.status(201).json({ ok: true, mensaje: 'Producto creado', datos: rows[0] });
+    const datos=transformarProducto(rows[0]);
+    res.status(201).json({ ok: true, mensaje: 'Producto creado', datos});
   } catch (err) {
     next(err);
   }
@@ -102,8 +109,9 @@ const editarProducto = async (req, res, next) => {
        RETURNING *`,
       [nombre, descripcion, precio, stock, categoria_id, imagen_url, activo, id]
     );
+    const datos=transformarProducto(rows[0]);
 
-    res.json({ ok: true, mensaje: 'Producto actualizado', datos: rows[0] });
+    res.json({ ok: true, mensaje: 'Producto actualizado', datos});
   } catch (err) {
     next(err);
   }
@@ -121,8 +129,8 @@ const eliminarProducto = async (req, res, next) => {
     if (rows.length === 0) {
       return res.status(404).json({ ok: false, mensaje: 'Producto no encontrado' });
     }
-
-    res.json({ ok: true, mensaje: 'Producto eliminado (soft delete)', datos: rows[0] });
+    const datos=transformarProducto(rows[0]);
+    res.json({ ok: true, mensaje: 'Producto eliminado (soft delete)', datos});
   } catch (err) {
     next(err);
   }
@@ -134,4 +142,4 @@ module.exports = {
   crearProducto,
   editarProducto,
   eliminarProducto,
-};
+}
